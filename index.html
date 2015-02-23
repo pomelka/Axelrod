@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Axelrod</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Axelrod</h1>
+        <p><a href="https://github.com/drvinceknight/Axelrod">This repository</a> reproduces Axelrod's iterated prisoner's dilemma tournament. Contributions are welcome via <a href="https://github.com/drvinceknight/Axelrod/pulls">pull request</a>.</p>
+        <small>View the repository on <a href="https://github.com/drvinceknight/Axelrod">Github</a></small>
+    </header>
+    <div id="content">
+        <form id="choice">
+            <label for="result_select">
+            Select Result set: 
+            <select id="result_select">
+                <option selected value="all_results">All Results</option>
+                <option value="cheating_results">Cheating Results</option>
+                <option value="results">No Cheaters</option>
+            </select>
+            <input type="button" id="reset" value="Reset Visualisation">
+        </label>
+        </form>
+        <div id="vis">
+        </div>
+    </div>
+    <div id="description">
+        <h2>Contributing</h2>
+        <p>The repository contains Python (2.7) code that reproduces the tournament. You can see the results from the latest run of the tournament on this page, use the dropdown at top-left of the visualisation to select the results set to visualise. All contributions are welcome: with a particular emphasis on contributing further strategies.</p>
+        <p>To contribute a strategy you need to do 4 (optionally 6) things (all of which can actually be done using the <a href="https://github.com/drvinceknight/Axelrod">github website</a>)
+        <ol>
+            <li>Fork this repository</li>
+            <li>Add a <code>&lt;strategy&gt;.py</code> file to the <code>strategies</code> directory. (Take a look at the others in there: you need to write code for the strategy and one other simple thing)</li>
+            <li>Update the <code>./axelrod/strategies/__init__.py</code> file (you need to write the <code>import</code> statement and add the strategy to the relevant python list)</li>
+            <li>(This one is optional: write some unit tests in the <code>./axelrod/tests/</code> directory)</li>
+            <li>(This one is also optional: add your name to the contributors list in the readme)</li>
+            <li>Send a pull request</li>
+        </ol>
+     </p>
+    </div>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.js"></script>
+    <script src="js/colorbrewer.js"></script>
+    <script src="js/vis.js"></script>
+</body>
+</html>
