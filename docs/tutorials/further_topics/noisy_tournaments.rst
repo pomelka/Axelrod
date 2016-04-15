@@ -32,7 +32,7 @@ To create a noisy tournament you simply need to add the `noise` argument::
     >>> p = plot.boxplot()
     >>> p.show()
 
-.. image:: _static/visualising_results/demo_strategies_noisy_boxplot.svg
+.. image:: _static/noisy_tournaments/demo_strategies_noisy_boxplot.svg
    :width: 50%
    :align: center
 
@@ -41,6 +41,6 @@ Here is how the distribution of wins now looks::
     >>> p = plot.winplot()
     >>> p.show()
 
-.. image:: _static/visualising_results/demo_strategies_noisy_winplot.svg
+.. image:: _static/noisy_tournaments/demo_strategies_noisy_winplot.svg
    :width: 50%
    :align: center

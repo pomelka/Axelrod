@@ -5,7 +5,7 @@ This tutorial will show you briefly how to access the detailed interaction
 results corresponding to the tournament.
 
 To access the detailed interaction results we create a tournament as usual
-(see :ref:`getting-started`)::
+(see :ref:`creating_tournaments`)::
 
     >>> import axelrod as axl
     >>> strategies = [

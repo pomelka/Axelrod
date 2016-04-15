@@ -8,7 +8,7 @@ This tutorial will show you briefly how to visualise some basic results
 Visualising the results of the tournament
 -----------------------------------------
 
-As shown in :ref:`getting-started` let us create a tournament, but this time we will
+As shown in :ref:`creating_tournaments`, let us create a tournament, but this time we will
 include a strategy that acts randomly::
 
     >>> import axelrod as axl

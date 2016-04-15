@@ -53,32 +53,3 @@ obtained :math:`\approx 4`)::
 .. image:: _static/prob_end_tournaments/prob_end_lengthplot.svg
    :width: 50%
    :align: center
-
-Just as for a constant length tournament and as described in
-:ref:`ecological-variant` we can look at the strategies in an evolutionary
-context::
-
-    >>> eco = axl.Ecosystem(results)
-    >>> eco.reproduce(100)
-    >>> p = plot.stackplot(eco)
-    >>> p.show()
-
-.. image:: _static/prob_end_tournaments/prob_end_stackplot.svg
-   :width: 50%
-   :align: center
-
-Note that if we repeat the above but using a much lower probability of the
-match ending (thus increasing the importance of reputation)::
-
-    >>> tournament = axl.ProbEndTournament(strategies, prob_end=0.01)
-    >>> results = tournament.play()
-    >>> eco = axl.Ecosystem(results)
-    >>> eco.reproduce(100)
-    >>> p = plot.stackplot(eco)
-    >>> p.show()
-
-We see that the :code:`Cooperation` now takes over:
-
-.. image:: _static/prob_end_tournaments/prob_end_stackplot_low_p.svg
-   :width: 50%
-   :align: center
