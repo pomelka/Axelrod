@@ -19,3 +19,5 @@ def matches(draw, players=non_stochastic_strategies, min_turns=1,
     return match
 
 
+@composite
+def tournaments(draw, players

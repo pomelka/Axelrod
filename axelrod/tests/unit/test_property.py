@@ -30,3 +30,10 @@ class TestMatch(unittest.TestCase):
         self.assertGreaterEqual(len(match), 10)
         self.assertLessEqual(len(match), 50)
         self.assertEqual(match.noise, 0)
+
+
+class TestTournament(unittest.TestCase):
+
+    def test_call(self):
+        tournament = tournaments().example()
+        self.assertIsInstance(tournament, axelrod.Tournament)
