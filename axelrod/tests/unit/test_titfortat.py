@@ -3,6 +3,10 @@
 import axelrod
 from .test_player import TestHeadsUp, TestPlayer
 
+from hypothesis import given
+from hypothesis.strategies import integers
+from axelrod.tests.property import strategy_lists
+
 C, D = axelrod.Actions.C, axelrod.Actions.D
 
 
@@ -362,3 +366,35 @@ class TestGradual(TestPlayer):
         match = axelrod.Match((player, opp2), 1000)
         match.play()
         self.assertEqual(match.final_score(), (3472, 767))
+
+
+class TestContriteTitForTat(TestPlayer):
+
+    name = "Contrite Tit For Tat"
+    player = axelrod.ContriteTitForTat
+    expected_classifier = {
+        'memory_depth': 3,
+        'stochastic': False,
+        'makes_use_of': set(),
+        'inspects_source': False,
+        'manipulates_source': False,
+        'manipulates_state': False
+    }
+
+    deterministic_strategies = [s for s in axelrod.strategies if not s().classifier['stochastic']]
+
+    @given(strategies=strategy_lists(strategies=deterministic_strategies, max_size=1),
+           turns=integers(min_value=1, max_value=20))
+    def test_is_tit_for_tat_with_no_noise(self, strategies, turns):
+        tft = axelrod.TitForTat()
+        p = self.player()
+        opponent = strategies[0]()
+        m1 = axelrod.Match((tft, opponent), turns)
+        m2 = axelrod.Match((tft, opponent), turns)
+        self.assertEqual(m1.play(), m2.play())
+
+    def test_reset_cleans_all(self):
+        p = self.player()
+        p.contrite = True
+        p.reset()
+        self.assertFalse(p.contrite)
