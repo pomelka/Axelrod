@@ -14,7 +14,7 @@ class TestClassification(unittest.TestCase):
                       'manipulates_source',
                       'manipulates_state']
 
-        for s in axelrod.strategies:
+        for s in axelrod.all_strategies:
             s = s()
             self.assertTrue(None not in [s.classifier[key] for key in known_keys])
 
@@ -130,20 +130,22 @@ class TestClassification(unittest.TestCase):
 class TestStrategies(unittest.TestCase):
 
     def test_strategy_list(self):
-        for strategy_list in ["strategies",
+        for strategy_list in ["all_strategies",
                               "demo_strategies",
                               "basic_strategies",
-                              "ordinary_strategies",
+                              "strategies",
+                              #"ordinary_strategies",
                               "cheating_strategies"]:
             self.assertTrue(hasattr(axelrod, strategy_list))
 
     def test_lists_not_empty(self):
-        for strategy_list in [axelrod.strategies,
+        for strategy_list in [axelrod.all_strategies,
                               axelrod.demo_strategies,
                               axelrod.basic_strategies,
-                              axelrod.ordinary_strategies,
+                              axelrod.strategies,
+                              #axelrod.ordinary_strategies,
                               axelrod.cheating_strategies]:
-            self.assertTrue(len(strategy_list) > 0)
+            self.assertTrue(len(strategy_list) > 0, strategy_list)
 
     def test_meta_inclusion(self):
         self.assertTrue(axelrod.MetaMajority in axelrod.strategies)
