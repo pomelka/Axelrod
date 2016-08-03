@@ -189,7 +189,7 @@ class SpatialMatches(RoundRobinMatches):
         A list of tuples containing the existing edges
     """
 
-    def __init__(self, players, turns, game, repetitions, edges):
+    def __init__(self, players, turns, game, repetitions, edges, noise=0):
 
         player_indices = list(range(len(players)))
         node_indices = sorted(set([node for edge in edges for node in edge]))
@@ -197,7 +197,8 @@ class SpatialMatches(RoundRobinMatches):
             raise ValueError("The graph edges do not include all players.")
 
         self.edges = edges
-        super(SpatialMatches, self).__init__(players, turns, game, repetitions)
+        super(SpatialMatches, self).__init__(players, turns, game, repetitions,
+                                             noise)
 
     def build_match_chunks(self):
         for edge in self.edges:
