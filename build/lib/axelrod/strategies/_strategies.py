@@ -62,7 +62,7 @@ from .titfortat import (
 
 # Note: Meta* strategies are handled in .__init__.py
 
-all_strategies = [
+strategies = [
     Adaptive,
     Aggravater,
     ALLCorALLD,
@@ -89,7 +89,6 @@ all_strategies = [
     CyclerCCD,
     CyclerDC,
     CyclerDDC,
-    Desperate, 
     Darwin,
     Davis,
     Defector,
@@ -118,14 +117,13 @@ all_strategies = [
     GoByMajority20,
     GoByMajority40,
     GoByMajority5,
-    Grim, 
     Handshake,
     HardGoByMajority,
     HardGoByMajority10,
     HardGoByMajority20,
     HardGoByMajority40,
     HardGoByMajority5,
-    Hopeless, 
+    Hopeless,
     Golden,
     Gradual,
     Grim, 
