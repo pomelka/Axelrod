@@ -120,10 +120,18 @@ class TestResultSet(unittest.TestCase):
                 [0, 0, 0],
             ]
 
+        cls.expected_state_distribution = [
+                [], [], []
+            ]
+
         cls.expected_normalised_cooperation = [
                 [0, mean([3 / 5.0 for _ in range(3)]), mean([3 / 5.0 for _ in range(3)])],
                 [mean([3 / 5.0 for _ in range(3)]), 0, mean([1 / 5.0 for _ in range(3)])],
                 [0, 0, 0],
+            ]
+
+        cls.expected_state_distribution = [
+                [], [], []
             ]
 
         cls.expected_vengeful_cooperation = [[2 * element - 1 for element in row]
@@ -323,6 +331,22 @@ class TestResultSet(unittest.TestCase):
         self.assertEqual(rs.normalised_cooperation,
                          self.expected_normalised_cooperation)
 
+    def test_state_distribution(self):
+        rs = axelrod.ResultSet(self.players, self.interactions,
+                               progress_bar=False)
+        self.assertIsInstance(rs.state_distribution, list)
+        self.assertEqual(len(rs.state_distribution), rs.nplayers)
+        self.assertEqual(rs.state_distribution,
+                         self.expected_state_distribution)
+
+    def test_state_normalised_distribution(self):
+        rs = axelrod.ResultSet(self.players, self.interactions,
+                               progress_bar=False)
+        self.assertIsInstance(rs.normalised_state_distribution, list)
+        self.assertEqual(len(rs.normalised_state_distribution), rs.nplayers)
+        self.assertEqual(rs.normalised_state_distribution,
+                         self.expected_state_distribution)
+
     def test_vengeful_cooperation(self):
         rs = axelrod.ResultSet(self.players, self.interactions,
                                progress_bar=False)
@@ -413,6 +437,11 @@ class TestResultSet(unittest.TestCase):
         self.assertEqual([float(player.Wins) for player in sd],
                          ranked_median_wins)
 
+        ranked_mean_state_dist = [nanmean(list(zip(*rs.normalised_state_distribution[i])))
+                                  for i in rs.ranking]
+        self.assertEqual([float(player.State_distribution) for player in sd],
+                         ranked_mean_state_dist)
+
     def test_write_summary(self):
         rs = axelrod.ResultSet(self.players, self.interactions,
                                progress_bar=False)
@@ -422,7 +451,7 @@ class TestResultSet(unittest.TestCase):
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 ranked_names.append(row[1])
-                self.assertEqual(len(row), 5)
+                self.assertEqual(len(row), 6)
         self.assertEqual(ranked_names[0], "Name")
         self.assertEqual(ranked_names[1:], rs.ranked_names)
 
