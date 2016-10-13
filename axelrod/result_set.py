@@ -401,6 +401,21 @@ class ResultSet(object):
         self.cooperation[p1][p2] += cooperations[0]
         self.cooperation[p2][p1] += cooperations[1]
 
+    def _update_state_distribution(self, p1, p2, state_vector):
+        self.state_distribution[p1][p2].CC += state_vector.CC
+        self.state_distribution[p2][p1].CC += state_vector.CC
+
+        self.state_distribution[p1][p2].DD += state_vector.DD
+        self.state_distribution[p2][p1].DD += state_vector.DD
+
+        self.state_distribution[p1][p2].CD += state_vector.CD
+        self.state_distribution[p2][p1].DC += state_vector.DC
+
+
+        self.state_distribution[p1][p2].DC += state_vector.DC
+        self.state_distribution[p2][p1].CD += state_vector.CD
+
+
     def _update_good_partner_matrix(self, p1, p2, cooperations):
         if cooperations[0] >= cooperations[1]:
             self.good_partner_matrix[p1][p2] += 1
