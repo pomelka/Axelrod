@@ -1,7 +1,7 @@
 import csv
 import tqdm
 
-from collections import namedtuple
+from collections import namedtuple, Counter
 from numpy import mean, nanmedian, std
 
 from . import eigen
@@ -350,6 +350,8 @@ class ResultSet(object):
         self.cooperation = [[0 for opponent in plist] for player in plist]
         self.normalised_cooperation = [[[] for opponent in plist]
                                        for player in plist]
+        self.state_distribution = [[Counter() for opponent in plist]
+                                   for player in plist]
         self.good_partner_matrix = [[0 for opponent in plist]
                                     for player in plist]
 
@@ -401,20 +403,12 @@ class ResultSet(object):
         self.cooperation[p1][p2] += cooperations[0]
         self.cooperation[p2][p1] += cooperations[1]
 
-    def _update_state_distribution(self, p1, p2, state_vector):
-        self.state_distribution[p1][p2].CC += state_vector.CC
-        self.state_distribution[p2][p1].CC += state_vector.CC
+    def _update_state_distribution(self, p1, p2, counter):
+        self.state_distribution[p1][p2] += counter
 
-        self.state_distribution[p1][p2].DD += state_vector.DD
-        self.state_distribution[p2][p1].DD += state_vector.DD
-
-        self.state_distribution[p1][p2].CD += state_vector.CD
-        self.state_distribution[p2][p1].DC += state_vector.DC
-
-
-        self.state_distribution[p1][p2].DC += state_vector.DC
-        self.state_distribution[p2][p1].CD += state_vector.CD
-
+        counter[('C', 'D')], counter[('D', 'C')] = (counter[('D', 'C')],
+                                                    counter[('C', 'D')])
+        self.state_distribution[p2][p1] += counter
 
     def _update_good_partner_matrix(self, p1, p2, cooperations):
         if cooperations[0] >= cooperations[1]:
@@ -481,6 +475,7 @@ class ResultSet(object):
                 scores_per_turn = iu.compute_final_score_per_turn(interaction,
                                                                  game=self.game)
                 cooperations = iu.compute_cooperations(interaction)
+                state_counter = iu.compute_state_distribution(interaction)
 
                 self._update_match_lengths(repetition, p1, p2, interaction)
                 self._update_payoffs(p1, p2, scores_per_turn)
@@ -498,6 +493,7 @@ class ResultSet(object):
                     self._update_normalised_scores(repetition, p1, p2,
                                                    scores_per_turn)
                     self._update_cooperation(p1, p2, cooperations)
+                    self._update_state_distribution(p1, p2, state_counter)
                     self._update_good_partner_matrix(p1, p2, cooperations)
 
         if progress_bar:
