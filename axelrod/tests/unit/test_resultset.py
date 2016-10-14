@@ -2,9 +2,10 @@ import unittest
 import axelrod
 import axelrod.interaction_utils as iu
 
-from numpy import mean, std, nanmedian
+from numpy import mean, std, nanmedian, nanmean
 
 import csv
+from collections import Counter
 
 from hypothesis import given, settings
 from axelrod.tests.property import tournaments, prob_end_tournaments
@@ -131,7 +132,27 @@ class TestResultSet(unittest.TestCase):
             ]
 
         cls.expected_state_distribution = [
-                [], [], []
+                [Counter(),
+                 Counter({('D', 'C'): 6, ('C', 'D'): 6, ('C', 'C'): 3}),
+                 Counter({('C', 'D'): 9, ('D', 'D'): 6})],
+                [Counter({('D', 'C'): 6, ('C', 'D'): 6, ('C', 'C'): 3}),
+                 Counter(),
+                 Counter({('D', 'D'): 12, ('C', 'D'): 3})],
+                [Counter({('D', 'C'): 9, ('D', 'D'): 6}),
+                 Counter({('D', 'D'): 12, ('D', 'C'): 3}),
+                 Counter()]
+            ]
+
+        cls.expected_normalised_state_distribution = [
+                [Counter(),
+                 Counter({('D', 'C'): 0.4, ('C', 'D'): 0.4, ('C', 'C'): 0.2}),
+                 Counter({('C', 'D'): 0.6, ('D', 'D'): 0.4})],
+                [Counter({('D', 'C'): 0.4, ('C', 'D'): 0.4, ('C', 'C'): 0.2}),
+                 Counter(),
+                 Counter({('D', 'D'): 0.8, ('C', 'D'): 0.2})],
+                [Counter({('D', 'C'): 0.6, ('D', 'D'): 0.4}),
+                 Counter({('D', 'D'): 0.8, ('D', 'C'): 0.2}),
+                 Counter()]
             ]
 
         cls.expected_vengeful_cooperation = [[2 * element - 1 for element in row]
@@ -345,7 +366,7 @@ class TestResultSet(unittest.TestCase):
         self.assertIsInstance(rs.normalised_state_distribution, list)
         self.assertEqual(len(rs.normalised_state_distribution), rs.nplayers)
         self.assertEqual(rs.normalised_state_distribution,
-                         self.expected_state_distribution)
+                         self.expected_normalised_state_distribution)
 
     def test_vengeful_cooperation(self):
         rs = axelrod.ResultSet(self.players, self.interactions,
