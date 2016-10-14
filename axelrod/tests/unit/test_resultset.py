@@ -458,11 +458,8 @@ class TestResultSet(unittest.TestCase):
         self.assertEqual([float(player.Wins) for player in sd],
                          ranked_median_wins)
 
-        # TODO Change this to counter object
-        ranked_mean_state_dist = [nanmean(list(zip(*rs.state_distribution[i])))
-                                  for i in rs.ranking]
-        self.assertEqual([float(player.State_distribution) for player in sd],
-                         ranked_mean_state_dist)
+        for player in sd:
+            self.assertEqual(player.CC_rate + player.CD_rate + player.DC_rate + player.DD_rate, 1)
 
     def test_write_summary(self):
         rs = axelrod.ResultSet(self.players, self.interactions,
@@ -473,7 +470,7 @@ class TestResultSet(unittest.TestCase):
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 ranked_names.append(row[1])
-                self.assertEqual(len(row), 8)
+                self.assertEqual(len(row), 9)
         self.assertEqual(ranked_names[0], "Name")
         self.assertEqual(ranked_names[1:], rs.ranked_names)
 
@@ -1247,3 +1244,15 @@ class TestResultSetSpatialStructureThree(TestResultSetSpatialStructure):
     def test_equality(self):
         """Overwriting for this particular case"""
         pass
+
+    def test_summarise(self):
+        """Overwriting for this particular case"""
+        rs = axelrod.ResultSet(self.players, self.interactions,
+                               progress_bar=False)
+        sd = rs.summarise()
+
+        for player in sd:
+            self.assertEqual(player.CC_rate, 0)
+            self.assertEqual(player.CD_rate, 0)
+            self.assertEqual(player.DC_rate, 0)
+            self.assertEqual(player.DD_rate, 0)

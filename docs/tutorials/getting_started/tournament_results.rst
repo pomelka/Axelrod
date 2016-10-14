@@ -217,11 +217,25 @@ We see that :code:`Cooperator` for all the rounds (as expected)::
 State distribution counts
 -------------------------
 
-This gives a total state count of the form :code:`(CC, CD, DC, DD)` of
-cooperation for each player against each opponent::
+This gives a total state count against each opponent::
 
-    >>> results.state_distribution
-    [[0, (), (), ()], [(), 0, (), ()], [(), (), 0, ()], [(), (), (), 0]]
+    >>> pprint.pprint(results.state_distribution)
+    [[Counter(),
+      Counter({('C', 'D'): 30}),
+      Counter({('C', 'C'): 30}),
+      Counter({('C', 'C'): 30})],
+     [Counter({('D', 'C'): 30}),
+      Counter(),
+      Counter({('D', 'D'): 27, ('D', 'C'): 3}),
+      Counter({('D', 'D'): 27, ('D', 'C'): 3})],
+     [Counter({('C', 'C'): 30}),
+      Counter({('D', 'D'): 27, ('C', 'D'): 3}),
+      Counter(),
+      Counter({('C', 'C'): 30})],
+     [Counter({('C', 'C'): 30}),
+      Counter({('D', 'D'): 27, ('C', 'D'): 3}),
+      Counter({('C', 'C'): 30}),
+      Counter()]]
 
 Normalised state distribution
 -----------------------------
@@ -229,7 +243,22 @@ Normalised state distribution
 This gives the average rate state distribution against each opponent::
 
     >>> pprint.pprint(results.normalised_state_distribution)
-    [[0, (), (), ()], [(), 0, (), ()], [(), (), 0, ()], [(), (), (), 0]]
+    [[Counter(),
+      Counter({('C', 'D'): 1.0}),
+      Counter({('C', 'C'): 1.0}),
+      Counter({('C', 'C'): 1.0})],
+     [Counter({('D', 'C'): 1.0}),
+      Counter(),
+      Counter({('D', 'D'): 0.9, ('D', 'C'): 0.1}),
+      Counter({('D', 'D'): 0.9, ('D', 'C'): 0.1})],
+     [Counter({('C', 'C'): 1.0}),
+      Counter({('D', 'D'): 0.9, ('C', 'D'): 0.1}),
+      Counter(),
+      Counter({('C', 'C'): 1.0})],
+     [Counter({('C', 'C'): 1.0}),
+      Counter({('D', 'D'): 0.9, ('C', 'D'): 0.1}),
+      Counter({('C', 'C'): 1.0}),
+      Counter()]]
 
 We see that :code:`Cooperator` never enters the states :code:`DC` or
 :code:`DD`::
@@ -269,10 +298,10 @@ that summarises the results of the tournament::
 
     >>> summary = results.summarise()
     >>> pprint.pprint(summary)
-    [Player(Rank=0, Name='Defector', Median_score=2.6..., Cooperation_rating=0.0, Wins=3.0, State_distribution=()),
-     Player(Rank=1, Name='Tit For Tat', Median_score=2.3..., Cooperation_rating=0.7, Wins=0.0, State_distribution=()),
-     Player(Rank=2, Name='Grudger', Median_score=2.3..., Cooperation_rating=0.7, Wins=0.0, State_distribution=()),
-     Player(Rank=3, Name='Cooperator', Median_score=2.0..., Cooperation_rating=1.0, Wins=0.0, State_distribution=())]
+    [Player(Rank=0, Name='Defector', Median_score=2.6..., Cooperation_rating=0.0, Wins=3.0, CC_rate=...),
+     Player(Rank=1, Name='Tit For Tat', Median_score=2.3..., Cooperation_rating=0.7, Wins=0.0, CC_rate=...),
+     Player(Rank=2, Name='Grudger', Median_score=2.3..., Cooperation_rating=0.7, Wins=0.0, CC_rate=...),
+     Player(Rank=3, Name='Cooperator', Median_score=2.0..., Cooperation_rating=1.0, Wins=0.0, CC_rate=...)]
 
 It is also possible to write this data directly to a csv file using the
 `write_summary` method::
@@ -284,7 +313,7 @@ It is also possible to write this data directly to a csv file using the
     ...     for row in csvreader:
     ...         print(row)
     ['Rank', 'Name', 'Median_score', 'Cooperation_rating', 'Wins', 'CC_rate', 'CD_rate', 'DC_rate', 'DD_rate']
-    ['0', 'Defector', '2.6...', '0.0', '3.0', '', '', '', '']
-    ['1', 'Tit For Tat', '2.3...', '0.7', '0.0', '', '', '', '']
-    ['2', 'Grudger', '2.3...', '0.7', '0.0', '', '', '', '']
-    ['3', 'Cooperator', '2.0...', '1.0', '0.0', '', '', '', '']
+    ['0', 'Defector', '2.6...', '0.0', '3.0', ...]
+    ['1', 'Tit For Tat', '2.3...', '0.7', '0.0', ...]
+    ['2', 'Grudger', '2.3...', '0.7', '0.0', ...]
+    ['3', 'Cooperator', '2.0...', '1.0', '0.0', ...]

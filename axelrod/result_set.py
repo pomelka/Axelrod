@@ -580,13 +580,27 @@ class ResultSet(object):
         median_wins = map(nanmedian, self.wins)
 
         self.player = namedtuple("Player", ["Rank", "Name", "Median_score",
-                                            "Cooperation_rating", "Wins"])
+                                            "Cooperation_rating", "Wins",
+                                            "CC_rate", "CD_rate", "DC_rate",
+                                            "DD_rate"])
 
-        summary_data = [perf for perf in zip(self.players,
-                                             median_scores,
-                                             self.cooperating_rating,
-                                             median_wins)]
-        summary_data = [self.player(rank, *summary_data[i]) for
+        states = [('C', 'C'), ('C', 'D'), ('D', 'C'), ('D', 'D')]
+        state_prob = []
+        for i, player in enumerate(self.normalised_state_distribution):
+            counts = []
+            for state in states:
+                counts.append(sum([opp[state] for j, opp in enumerate(player)
+                                   if i != j]))
+            try:
+                counts = [c / sum(counts) for c in counts]
+            except ZeroDivisionError:
+                counts = [0 for c in counts]
+            state_prob.append(counts)
+
+        summary_data = list(zip(self.players, median_scores,
+                                self.cooperating_rating, median_wins))
+
+        summary_data = [self.player(rank, *summary_data[i], *state_prob[i]) for
                         rank, i in enumerate(self.ranking)]
 
         return summary_data
@@ -595,7 +609,7 @@ class ResultSet(object):
         """
         Write a csv file containing summary data of the results of the form:
 
-            "Rank", "Name", "Median-score-per-turn", "Cooperation-rating"
+            "Rank", "Name", "Median-score-per-turn", "Cooperation-rating", "Wins", "CC-Rate", "CD-Rate", "DC-Rate", "DD-rate"
 
         Parameters
         ----------
