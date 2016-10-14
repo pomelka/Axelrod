@@ -326,6 +326,26 @@ class ResultSet(object):
         return sorted(range(self.nplayers),
                       key=lambda i: -nanmedian(self.normalised_scores[i]))
 
+    def build_normalised_state_distribution(self):
+        """
+        Returns
+        ----------
+
+            Normalised state distribution. A list of lists of counter objects:
+
+            Dictionary where the keys are the states and the values are a
+            normalized counts of the number of times that state occurs.
+        """
+        norm = []
+        for player in self.state_distribution:
+            counters = []
+            for counter in player:
+                total = sum(counter.values(), 0.0)
+                counters.append(Counter({key: value / total for key, value in
+                                         counter.items()}))
+            norm.append(counters)
+        return norm
+
     def _build_empty_metrics(self, keep_interactions=False):
         """
         Creates the various empty metrics ready to be updated as the data is
@@ -503,6 +523,7 @@ class ResultSet(object):
         self._summarise_normalised_cooperation()
 
         self.ranking = self.build_ranking()
+        self.normalised_state_distribution = self.build_normalised_state_distribution()
         self.ranked_names = self.build_ranked_names()
         self.payoff_matrix = self.build_payoff_matrix()
         self.payoff_stddevs = self.build_payoff_stddevs()

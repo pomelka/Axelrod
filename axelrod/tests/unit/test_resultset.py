@@ -438,7 +438,7 @@ class TestResultSet(unittest.TestCase):
                          ranked_median_wins)
 
         # TODO Change this to counter object
-        ranked_mean_state_dist = [nanmean(list(zip(*rs.normalised_state_distribution[i])))
+        ranked_mean_state_dist = [nanmean(list(zip(*rs.state_distribution[i])))
                                   for i in rs.ranking]
         self.assertEqual([float(player.State_distribution) for player in sd],
                          ranked_mean_state_dist)
