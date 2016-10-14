@@ -437,6 +437,7 @@ class TestResultSet(unittest.TestCase):
         self.assertEqual([float(player.Wins) for player in sd],
                          ranked_median_wins)
 
+        # TODO Change this to counter object
         ranked_mean_state_dist = [nanmean(list(zip(*rs.normalised_state_distribution[i])))
                                   for i in rs.ranking]
         self.assertEqual([float(player.State_distribution) for player in sd],
@@ -451,11 +452,9 @@ class TestResultSet(unittest.TestCase):
             csvreader = csv.reader(csvfile)
             for row in csvreader:
                 ranked_names.append(row[1])
-                self.assertEqual(len(row), 6)
+                self.assertEqual(len(row), 8)
         self.assertEqual(ranked_names[0], "Name")
         self.assertEqual(ranked_names[1:], rs.ranked_names)
-
-
 
 
 class TestResultSetFromFile(unittest.TestCase):

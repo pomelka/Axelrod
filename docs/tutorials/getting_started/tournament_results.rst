@@ -283,8 +283,8 @@ It is also possible to write this data directly to a csv file using the
     ...     csvreader = csv.reader(outfile)
     ...     for row in csvreader:
     ...         print(row)
-    ['Rank', 'Name', 'Median_score', 'Cooperation_rating', 'Wins', 'State distribution']
-    ['0', 'Defector', '2.6...', '0.0', '3.0', '()']
-    ['1', 'Tit For Tat', '2.3...', '0.7', '0.0', '()']
-    ['2', 'Grudger', '2.3...', '0.7', '0.0', '()']
-    ['3', 'Cooperator', '2.0...', '1.0', '0.0', '()']
+    ['Rank', 'Name', 'Median_score', 'Cooperation_rating', 'Wins', 'CC_rate', 'CD_rate', 'DC_rate', 'DD_rate']
+    ['0', 'Defector', '2.6...', '0.0', '3.0', '', '', '', '']
+    ['1', 'Tit For Tat', '2.3...', '0.7', '0.0', '', '', '', '']
+    ['2', 'Grudger', '2.3...', '0.7', '0.0', '', '', '', '']
+    ['3', 'Cooperator', '2.0...', '1.0', '0.0', '', '', '', '']
